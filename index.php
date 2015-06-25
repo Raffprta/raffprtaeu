@@ -32,6 +32,9 @@ $twig = new Twig_Environment($loader);
 // Add global URL
 $twig->addGlobal('baseURL', BASE_URL);
 
+// Initialise database.
+init();
+
 //================================================================================
 // Index page.
 //================================================================================
@@ -66,4 +69,22 @@ function displayPage($template, $extraVars) {
     }
     // Render the template
     echo $twig->render($template, $twigVars);
+}
+
+//================================================================================
+// Database Setup Helper
+//================================================================================
+function init() {
+    // Setup our RedBean environment.
+    R::setup('mysql:host=' . DATABASE_HOST . '; dbname=' . DATABASE_NAME, DATABASE_USERNAME, DATABASE_PASSWORD, REDBEAN_FREEZE_ENABLED);
+	
+	// Attempt to connect to the configured Database 
+    if (!R::testConnection()) {
+        throw new Exception('Couldn\'t connect to database. Please check backend configuration.');
+    }
+    // Enable debug mode
+    R::debug(REDBEAN_DEBUG_ENABLED);
+	
+    // Use camelCase for bean export
+    R::useExportCase('camel');
 }
