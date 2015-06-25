@@ -1,0 +1,63 @@
+{#
+    Re-usable HTML view which is used by all views.
+#}
+
+<!DOCTYPE html>
+<html>
+<head>
+    {% block head %}
+        <base href="{{ baseURL }}">
+        <title>Raffaello Perrotta - Blog</title>
+        <meta charset="UTF-8">
+
+        {# Custom styles #}
+        <link rel="stylesheet" href="style/style.css">
+
+        {# TukTuk styles #}
+		<link rel="stylesheet" href="tuktuk/tuktuk.css">
+        <link rel="stylesheet" href="tuktuk/tuktuk.theme.css">
+        <link rel="stylesheet" href="tuktuk/tuktuk.icons.css">
+		
+		{# Bootstrap styles - available at: http://getbootstrap.com #}
+        <link rel="stylesheet" href="style/bootstrap.min.css">
+        <link rel="stylesheet" href="style/bootstrap-theme.min.css">
+
+    {% endblock %}
+</head>
+
+<body>
+
+	<section class="padding bck dark">
+        <div class="row">
+            <div class="text center">
+                <h1 class="color book theme"><a href="index.php"> Raffaello Perrotta</a></h1>
+                <h5 class="color book theme"> -- a minimalist blog implementation aimed primarily towards commentary regarding technology -- </h5>		
+				    </div>
+            <div class="row">
+              <!-- Warning: Kawaii is contained within these lines; abort from progressing if you cannot handle kawaii. -->
+              <div class="column_4 offset_4 text center white">
+                  <img src="img/img.png" class="responsive rounded margin-top pic-fix">
+              </div>
+            </div>
+        </div>
+    </section>
+  
+   {% block content %}{% endblock %}
+  
+    <section class="padding footer" style=<?php echo $style ?>>
+      <div class="row">
+        <div class="column_4">
+          <h4><a href="search.php"> Search Posts </a></h4>
+        </div>
+
+        <div class="column_4">
+          <h4><a href="http://icepoll.raffprta.eu"> IcePoll </a></h4>
+        </div>
+
+        <div class="column_4">
+          <h4><a href="https://github.com/raffprta"> GitHub </a></h4>
+        </div>
+     </div>
+    </section>
+	
+</body>

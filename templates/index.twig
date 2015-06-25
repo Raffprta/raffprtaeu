@@ -1,0 +1,38 @@
+{#
+    Index page view.
+#}
+
+{% extends "base.twig" %}
+
+{% block content %}
+{% if posts %}
+<section class="padding bck color">
+  <div class="row" id="blog">
+    <div class="column_6" id="post-info">
+      <span class="preamble">
+        ID: {{ posts.id }}
+        Posted: {{ posts.date }}
+        Tags: {{ posts.tag }}
+      </span>
+    </div>  
+
+    <div class="column_6 offset_4 color book theme" id="post-name">
+      <h3> {{ posts.id }} </h3>
+    </div>
+
+    <div class="column_12 margin-right content-wrapper" id="post-content">
+      <p class="post"> {{ posts.post }} </p>
+    </div>
+  </div>
+</section>
+	
+{% else %}
+
+  {# No posts to the blog #}
+  <section class="alert alert-info" role="alert">
+    <p><span class="glyphicon glyphicon-info-sign"></span> This blog has no posts! Wait for the admin to make some.</p>
+  </section>
+  
+{% endif %}
+
+{% endblock %}
