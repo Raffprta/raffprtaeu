@@ -62,8 +62,13 @@ $klein->respond('POST', '/admin_post', function ($request, $response, $service) 
 	// Grab the password entered.
 	$pass = $_POST['pass'];
 	
+	$errors = [];
+	
+	$wantsToMakeANewBlog = !empty($title) && !empty($content) && !empty($tags);
+	$wantsToEditABlog = !empty($edit) && !empty($id);
+	
 	// If a new post is being made
-	if(!empty($title) && !empty($content) && !empty($tags)){
+	if($wantsToMakeANewBlog){
 		if($pass == ADMIN_PASS){
 			// The post can be made.
 			$blog = R::dispense('blog');
@@ -75,11 +80,16 @@ $klein->respond('POST', '/admin_post', function ($request, $response, $service) 
 
 			// Save to database
 			R::store($blog);
+		}else{
+			$errors[] = "Your password was typed in incorrectly";
 		}
+	}else{
+		if(!$wantsToEditABlog)
+		    $errors[] = "Ensure you filled out all of the details in the new blog fields";
 	}
 	
 	// Check if the user wanted to edit anything.
-	if(!empty($edit) && !empty($id)){
+	if($wantsToEditABlog){
 		if($pass == ADMIN_PASS){
 			// Find the post you want to edit
 			$blog = R::load('blog', $id);
@@ -88,12 +98,19 @@ $klein->respond('POST', '/admin_post', function ($request, $response, $service) 
 				$blog->content = $edit;
 				// Save to database
 				R::store($blog);
+			}else{
+				$errors[] = "The ID is incorrect";
 			}
+		}else{
+			$errors[] = "Your password was typed in incorrectly";
 		}
+	}else{
+		if(!$wantsToMakeANewBlog)
+		    $errors[] = "Ensure you filled out all of the details in the edit fields";
 	}
-
 	
-    displayPage('admin_post.twig', null);
+    displayPage('admin_post.twig', array('errors' => $errors));
+	
 });
 
 // URL routing handlers are now installed; try to dispatch the request

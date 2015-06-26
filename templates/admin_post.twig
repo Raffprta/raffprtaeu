@@ -5,6 +5,15 @@
 {% extends "base.twig" %}
 
 {% block content %}
+{% if errors %}
+  {% for error in errors %}
+	  {# An error was caught #}
+	  <section class="alert"">
+		<p><span class="icon info-sign"></span> There was an error - {{ error }}.</p>
+	  </section>
+  {% endfor %}
+{% else %}
+
 <section class="padding bck color">
 
   <form action="admin_post" method="post">
@@ -62,4 +71,5 @@
 
  </section>
  <script src="script/utility.js"></script>
+{% endif %}
 {% endblock %}
