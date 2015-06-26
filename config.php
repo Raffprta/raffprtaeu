@@ -12,14 +12,12 @@ define('DATABASE_USERNAME', 'root');            // Database username
 define('DATABASE_PASSWORD', '');                // Database password
 define('REDBEAN_FREEZE_ENABLED', false);        // Freeze RedBean for production use (performance increase)
 define('REDBEAN_DEBUG_ENABLED', false);         // RedBean debug mode
+define('ADMIN_PASS', 'editme');                       // Blog Post Password. Configurable.
 
 //================================================================================
 // Fixed Global Configuration
 //================================================================================
-
-// Access Level
-define('ACCESS_LEVEL_USER',             0);     
-define('ACCESS_LEVEL_ADMINISTRATOR',    1);    
+  
 
 // Klein flash message types
 define('FLASH_SUCCESS',         'success');     // Success message

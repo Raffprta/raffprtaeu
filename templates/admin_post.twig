@@ -1,0 +1,65 @@
+{#
+    Admin page view to enter blog posts.
+#}
+
+{% extends "base.twig" %}
+
+{% block content %}
+<section class="padding bck color">
+
+  <form action="admin_post" method="post">
+
+  <div class="row">
+    <div class="column_8">
+      <h2>Add New:</h2>
+      <fieldset>
+        <textarea name="new" id="new" type="text" rows="25" cols="25"> </textarea>
+      </fieldset>
+    </div>
+
+    <div class="column_4">
+      <h2>Name It:</h2>
+      <fieldset>
+        <input type="text" name="blogTitle" id="blog-title">
+      </fieldset>
+
+      <h2>Tags:</h2>
+      <fieldset>
+        <input type="text" name="tags" id="tags">
+      </fieldset>
+    </div>
+    
+  </div>
+
+   <div class="row">
+    <div class="column_8">
+	
+      <h2>Edit:</h2>
+      <fieldset>
+        <textarea name="edit" id="edit" type="text" rows="25" cols="40"> </textarea>
+      </fieldset>
+
+    </div>
+
+     <div class="column_4">
+	 
+      <h2>Post #:</h2>
+      <fieldset>
+        <input type="text" name="id" id="id">
+      </fieldset>
+	  
+    </div>
+    
+  </div>
+
+  <div class="row">
+    <div class="column_6 text center margin-top padding-top offset_3">
+    <input type="password" name="pass" id="pass" placeholder="Password Entry">
+    <button id="submit">Submit Modifications</button>
+    </div>
+  </div>
+  </form>
+
+ </section>
+ <script src="script/utility.js"></script>
+{% endblock %}

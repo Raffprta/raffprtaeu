@@ -42,6 +42,60 @@ $klein->respond('GET', '/', function() use ($twig) {
     displayPage('index.twig', null);
 });
 
+//================================================================================
+// Admin page.
+//================================================================================
+$klein->respond('GET', '/admin_post', function ($request, $response, $service) {
+    displayPage('admin_post.twig', null);
+});
+
+$klein->respond('POST', '/admin_post', function ($request, $response, $service) {
+	// Get the information if there's a new blog post to be sent.
+	$title = $_POST['blogTitle'];
+	$content = $_POST['new'];
+	$tags = $_POST['tags'];
+	
+	// Edit a post information.
+	$edit = $_POST['edit'];
+	$id = $_POST['id'];
+	
+	// Grab the password entered.
+	$pass = $_POST['pass'];
+	
+	// If a new post is being made
+	if(!empty($title) && !empty($content) && !empty($tags)){
+		if($pass == ADMIN_PASS){
+			// The post can be made.
+			$blog = R::dispense('blog');
+			$blog->title = $title;
+			$blog->dateWhen = date('Y-m-d');
+			$blog->tags = $tags;
+			$blog->content = $content;
+			$blog->likes = 0;
+
+			// Save to database
+			R::store($blog);
+		}
+	}
+	
+	// Check if the user wanted to edit anything.
+	if(!empty($edit) && !empty($id)){
+		if($pass == ADMIN_PASS){
+			// Find the post you want to edit
+			$blog = R::load('blog', $id);
+			// If a blog post was found.
+			if($blog->id){
+				$blog->content = $edit;
+				// Save to database
+				R::store($blog);
+			}
+		}
+	}
+
+	
+    displayPage('admin_post.twig', null);
+});
+
 // URL routing handlers are now installed; try to dispatch the request
 $klein->dispatch();
 
