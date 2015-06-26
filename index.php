@@ -39,7 +39,8 @@ init();
 // Index page.
 //================================================================================
 $klein->respond('GET', '/', function() use ($twig) { 
-    displayPage('index.twig', null);
+	$blogs = R::findAll('blog');
+    displayPage('index.twig', array('posts' => $blogs));
 });
 
 //================================================================================
