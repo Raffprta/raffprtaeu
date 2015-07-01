@@ -24,8 +24,25 @@
     <div class="column_12 margin-right content-wrapper" id="post-content">
       <p class="post"> {{ post.content|nl2br }} </p>
     </div>
+	
+	<form action="like/{{post.id}}" id="likeForm{{post.id}}" method="POST">
+	<div class="column_3 offset_1 attach-bar text center">
+	 <a href="view/{{post.id}}"> Reply to this blog post.</a>
+	</div>
+	<div class="column_1 offset_6 attach-bar" id="likes">
+	  <span class="small icon heart likes-icon" id="like-submit" onclick="submitLike({{post.id}})"></span>
+	  <span> {{post.likes}} </span>
+	</div>
+    </form>
+	
   </div>
 </section>
+
+<script>
+	function submitLike(id){
+		 document.getElementById("likeForm"+id).submit();
+	}
+</script>
 
 {% endfor %}
 	
