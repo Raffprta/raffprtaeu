@@ -7,7 +7,7 @@
 {% block content %}
 {% if posts %}
 {% for post in posts %}
-<section class="padding bck color">
+<section class="padding bck color index">
   <div class="row" id="blog">
     <div class="column_6" id="post-info">
       <span class="preamble">
@@ -38,13 +38,14 @@
   </div>
 </section>
 
+{% endfor %}
+
 <script>
 	function submitLike(id){
 		 document.getElementById("likeForm"+id).submit();
 	}
 </script>
 
-{% endfor %}
 	
 {% else %}
 
