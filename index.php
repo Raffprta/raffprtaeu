@@ -70,6 +70,32 @@ $klein->respond('POST', '/post/[i:id]', function ($request, $response, $service)
 });
 
 //================================================================================
+// Likes page.
+//================================================================================
+$klein->respond('POST', '/like/[i:id]', function ($request, $response, $service) { 
+    // Create a new like bean in case it did not exist.
+    $like = R::dispense('likes');
+	// The blog that the like belongs to
+	$like->blog = R::findOne('blog', 'id = ?', array($request->id));
+	// The IP Address to prevent duplicate likes on the same blog.
+	$like->ip = $_SERVER['REMOTE_ADDR'];
+	
+	// Check for duplicates
+	$isDupe = R::findAll('likes', 'blog_id = :blogId AND ip = :ipaddr', 
+	                     array('blogId' => $request->id, 'ipaddr' => $_SERVER['REMOTE_ADDR']));
+	
+	if(count($isDupe) == 0){
+		// Update the amount of likes but only if there is no duplicate;
+		$like->blog->likes++;
+		// Store our bean to the DB
+		R::store($like);
+		displayPage('success.twig', null);
+	}else{
+		displayPage('success.twig', array('error' => "You have already liked this blog post"));
+	}
+});
+
+//================================================================================
 // Admin page.
 //================================================================================
 $klein->respond('GET', '/admin_post', function ($request, $response, $service) {
