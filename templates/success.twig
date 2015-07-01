@@ -1,0 +1,24 @@
+{#
+    Success page view.
+#}
+
+{% extends "base.twig" %}
+
+{% block content %}
+ 
+{% if error %}
+
+<section class="alert"">
+	<p><span class="icon info-sign"></span> There was an error - {{ error }}.</p>
+</section>
+
+{% else %}
+
+<section class="alert"">
+	<p><span class="icon info-sign"></span> Your post was successful you will be redirected back to the previous page.</p>
+	<script>setTimeout(function(){ history.back() }, 1500)</script>
+</section>
+
+{% endif %}
+
+{% endblock %}

@@ -34,14 +34,24 @@
 	 	<div class="column_6">
 	 	<fieldset>
 	 		 <textarea name="post" id="post" type="text" rows="8" cols="" style="width:100%"> </textarea>
-	 		 <input type = "hidden" name="blogid" value="{{blog.id}}" > </input>
 	 	</fieldset>
 	 	</div>
 	 	<div class="column_2 padding">
 	 		<button id="submit">Submit Post</button>
 	 	</div>
 	 	</form>
-	 </div>
+	  </div>
+	  {% if posts %}
+	  {% for post in posts %}
+	  <div class="post-individual"> 
+	    <h5>Post #: {{post.id}} -- UserID: {{post.uniquePoster}}</h5><br> {{post.content}}
+	  </div>
+	  {% endfor %}
+	  {% else %}
+	  <div class="post-individual"> 
+	    <h5>There are no posts here... yet :)</h5>
+	  </div>
+	  {% endif %}
 	</div>
 	<form action="like/{{blog.id}}" id="likeForm" method="POST">
 	<div class="column_1 attach-bar" id="likes">

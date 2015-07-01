@@ -48,7 +48,25 @@ $klein->respond('GET', '/', function() use ($twig) {
 //================================================================================
 $klein->respond('GET', '/view/[i:id]', function ($request, $response, $service) { 
     $blog = R::findOne('blog', 'id = ?', array($request->id));
-    displayPage('view.twig', array('blog' => $blog));
+	$posts = R::findAll('post', 'blog_id = ? ORDER BY id DESC', array($blog->id));
+    displayPage('view.twig', array('blog' => $blog, 'posts' => $posts));
+});
+
+//================================================================================
+// Posting page.
+//================================================================================
+$klein->respond('POST', '/post/[i:id]', function ($request, $response, $service) { 
+    // Create a new post bean and populate its contents from the form.
+    $post = R::dispense('post');
+	$post->content = $request->post;
+	$post->blog = R::findOne('blog', 'id = ?', array($request->id));
+	$post->uniquePoster = md5($_SERVER['REMOTE_ADDR']);
+	R::store($post);
+	// Display page saying that the post was successful or otherwise.
+	if($post)
+	    displayPage('success.twig', null);
+	else
+		displayPage('success.twig', array('error' => "Your post could not be created at this time"));
 });
 
 //================================================================================
