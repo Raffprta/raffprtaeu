@@ -29,7 +29,7 @@
 	  <div class="column_12 offset_2 margin-top text left">
 	  {% for result in searchByTag %}
 	    {% for info in result %}
-          <ul><li><a href="view.php?ID={{info.id}}">{{info.title}}</a></li>
+          <ul><li><a href="/view/{{info.id}}">{{info.title}}</a></li>
           </ul>
 	    {% endfor %}
 	  {% endfor %}

@@ -44,6 +44,14 @@ $klein->respond('GET', '/', function() use ($twig) {
 });
 
 //================================================================================
+// Blog View page.
+//================================================================================
+$klein->respond('GET', '/view/[i:id]', function ($request, $response, $service) { 
+    $blog = R::findOne('blog', 'id = ?', array($request->id));
+    displayPage('view.twig', array('blog' => $blog));
+});
+
+//================================================================================
 // Admin page.
 //================================================================================
 $klein->respond('GET', '/admin_post', function ($request, $response, $service) {

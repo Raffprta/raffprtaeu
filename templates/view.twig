@@ -1,0 +1,39 @@
+{#
+    Index page view.
+#}
+
+{% extends "base.twig" %}
+
+{% block content %}
+{% if blog %}
+
+<section class="padding bck color">
+	<div class="row" id="blog">
+
+	  <div class="column_6" id="post-info">
+		<span class="preamble">
+		  ID: {{blog.id}}  
+		  Posted: {{blog.date_when}} 
+		  Tags:  {{blog.tags}}
+		</span>
+	  </div>  
+
+	  <div class="column_6 offset_4 color book theme" id="post-name">
+		<h3>{{blog.title}}</h3>
+	  </div>
+
+	  <div class="column_12 margin-right content-wrapper" id="post-content">
+		<p class="post">
+		{{blog.content}}
+		</p>
+	  </div>
+	</div>
+</section>
+{% else %}
+  {# No blogs exist with this id #}
+  <section class="alert"">
+    <p><span class="icon info-sign"></span> There is no blog post for this id.</p>
+  </section>
+{% endif %}
+
+{% endblock %}
