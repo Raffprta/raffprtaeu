@@ -1,0 +1,114 @@
+{#
+    Search page view.
+#}
+
+{% extends "base.twig" %}
+
+{% block content %}
+ 
+{% if searchByDate %}
+<section class="padding bck color">
+  <div class="row margin-top padding-top">
+    <div class="text center">
+	  {# The purpose of date('1994-' ~ ofMonth ~ '-01') |date('M') is for a pseudo format to ensure the filter works #}
+      <h3 class="color book theme">Blog Archive for {{ ofMonth }} of {{ date('1994-' ~ ofMonth ~ '-01')|date('M') }} {{ ofYear }} </h3>
+	  <div class="column_12 offset_2 margin-top text left">
+	  {% for result in searchByDate %}
+          <ul><li><a href="view.php?ID={{result.id}}">{{result.title}}</a></li>
+          </ul>
+	  {% endfor %}
+	  </div>
+	</div>
+  </div>
+</section>
+{% elseif searchByTag %}
+   <section class="padding bck color">
+  <div class="row margin-top padding-top">
+    <div class="text center">
+      <h3 class="color book theme">Blog Archive for the tags: {{tags}} </h3>
+	  <div class="column_12 offset_2 margin-top text left">
+	  {% for result in searchByTag %}
+	    {% for info in result %}
+          <ul><li><a href="view.php?ID={{info.id}}">{{info.title}}</a></li>
+          </ul>
+	    {% endfor %}
+	  {% endfor %}
+	  </div>
+    </div>
+  </div>
+</section>
+{% else %}
+{% for error in errors %}
+  {# An error was caught #}
+  <section class="alert"">
+	<p><span class="icon info-sign"></span> There was an error - {{ error }}.</p>
+  </section>
+{% endfor %}
+<section class="padding bck color">
+
+  <form action="search">
+
+  <div class="row">
+    <div class="column_3">
+      <h2>Search by Date:</h2>
+      <fieldset class="margin-top">
+        <label> Archive Month: </label>
+        <select name="month">
+          <option value="" selected="selected">Select</option>
+          <option value="1">January</option>
+          <option value="2">February</option>
+          <option value="3">March</option>
+          <option value="4">April</option>
+          <option value="5">May</option>
+          <option value="6">June</option>
+          <option value="7">July</option>
+          <option value="8">August</option>
+          <option value="9">September</option>
+          <option value="10">October</option>
+          <option value="11">November</option>
+          <option value="12">December</option>
+        </select>
+
+        <label> Archive Year: </label>
+        <select name="year">
+          <option value="" selected="selected">Select</option>
+          <option value="2014">2014</option>  
+          <option value="2015">2015</option>
+        </select>
+
+    </fieldset>
+    </div>
+    <div class="column_5 offset_2">
+      <h2>Search by Tags:</h2>
+      <fieldset class="margin-top">
+        <label>Tags (separate using commas): </label>
+        <input name="tags" id="default" type="text">
+      </fieldset>
+    </div>
+    
+  </div>
+
+  <div class="row">
+    <div class="column_12 text center margin-top padding-top">
+    <button id="submit">Submit Search Selection</button>
+    </div>
+  </div>
+  </form>
+</section>
+{% endif %}
+
+ <script>
+
+    var submission = document.getElementById("submit");
+    submission.addEventListener("click", addCommas, false);
+
+    function addCommas(){
+      if(document.getElementById("default").value.indexOf(',') === -1 && document.getElementById("default").value != ""){
+        document.getElementById("default").value += ",";
+      }
+    }
+    
+
+ </script>
+ 
+ {% endblock %}

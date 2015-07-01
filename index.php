@@ -39,7 +39,7 @@ init();
 // Index page.
 //================================================================================
 $klein->respond('GET', '/', function() use ($twig) { 
-	$blogs = R::findAll('blog');
+	$blogs = R::findAll('blog', 'ORDER BY id DESC LIMIT 5');
     displayPage('index.twig', array('posts' => $blogs));
 });
 
@@ -48,6 +48,81 @@ $klein->respond('GET', '/', function() use ($twig) {
 //================================================================================
 $klein->respond('GET', '/admin_post', function ($request, $response, $service) {
     displayPage('admin_post.twig', null);
+});
+
+$klein->respond('GET', '/search', function ($request, $response, $service) {
+	
+	$month = null;
+	$year = null;
+	$tags = null;
+	$errors = null;
+	$onRootSearch = true;
+	
+	// Check if there's anything set
+	if((isset($_GET['month']) && isset($_GET['year'])) || isset($_GET['tags'])){
+		$month = $_GET['month'];
+		$year = $_GET['year'];
+		$tags = $_GET['tags'];
+		$onRootSearch = false;
+	}
+	
+	// Check what the user searched for.
+	$searchingByDate = !empty($month) && !empty($year);
+	$searchingByTags = !empty($tags);
+	
+	// Check if the user entered anything.
+	if(!$searchingByDate && !$searchingByTags && !$onRootSearch){
+		$errors[] = "Please search by either a date or by a tag";
+	}
+	
+	$searchResults = null;
+	
+	// If the user is searching by dates.
+	if($searchingByDate){
+		// Find all matching beans
+		$searchResults = R::find('blog','YEAR(date_when) = :year AND MONTH(date_when) = :month ',
+       		array('year' => $year, 'month' => $month));
+		
+		if(count($searchResults) == 0){
+			$errors[] = "There exist no blog posts at this date";
+		}
+		
+	}
+	
+	$tagsSearchResults = null;
+	
+	// Or by tags
+	if($searchingByTags){
+		// Separate all the Tags that the user searched with
+		$tagsToFind = explode(",", strtolower($tags), -1);
+
+		foreach($tagsToFind as $tagsQuery){
+			$tagsSearchResults[] = R::find('blog', 'tags LIKE ?', ['%'. $tagsQuery .'%']);
+		}
+		
+		if(count($tagsSearchResults) == 0){
+			$errors[] = "There exist no blog posts with this tag";
+		}
+	
+	
+	}
+	
+	if(count($searchResults) == 0 ){
+		$searchResults = null;
+	}
+	
+	if(count($tagsSearchResults) == 0){
+		$tagsSearchResults = null;
+	}
+
+	// Display the page handling any errors.	
+    displayPage('search.twig', array('searchByDate' => $searchResults, 
+	                                 'searchByTag' => $tagsSearchResults,
+									 'ofMonth' => $month,
+									 'ofYear' => $year,
+									 'tags' => $tags,
+									 'errors' => $errors));
+									 
 });
 
 $klein->respond('POST', '/admin_post', function ($request, $response, $service) {
@@ -75,7 +150,7 @@ $klein->respond('POST', '/admin_post', function ($request, $response, $service) 
 			$blog = R::dispense('blog');
 			$blog->title = $title;
 			$blog->dateWhen = date('Y-m-d');
-			$blog->tags = $tags;
+			$blog->tags = strtolower($tags);
 			$blog->content = $content;
 			$blog->likes = 0;
 
