@@ -27,8 +27,37 @@
 		{{blog.content}}
 		</p>
 	  </div>
+	<div class="column_9 offset_1 attach-bar" id="post">
+	 <div class="post-individual row">
+	 	<!-- Posting form -->
+	 	<form action="post/{{blog.id}}" method="POST">
+	 	<div class="column_6">
+	 	<fieldset>
+	 		 <textarea name="post" id="post" type="text" rows="8" cols="" style="width:100%"> </textarea>
+	 		 <input type = "hidden" name="blogid" value="{{blog.id}}" > </input>
+	 	</fieldset>
+	 	</div>
+	 	<div class="column_2 padding">
+	 		<button id="submit">Submit Post</button>
+	 	</div>
+	 	</form>
+	 </div>
 	</div>
+	<form action="like/{{blog.id}}" id="likeForm" method="POST">
+	<div class="column_1 attach-bar" id="likes">
+       <span class="small icon heart likes-icon" onClick="submitLike()" id="like-submit"></span>
+       <span>{{blog.likes}}</span> 
+    </div>
+    </form>
+   </div>
 </section>
+<script>
+
+	function submitLike(){
+		 document.getElementById("likeForm").submit();
+	}
+
+</script>
 {% else %}
   {# No blogs exist with this id #}
   <section class="alert"">
