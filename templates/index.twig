@@ -22,7 +22,12 @@
     </div>
 
     <div class="column_12 margin-right content-wrapper" id="post-content">
-      <p class="post"> {{ post.content|nl2br }} </p>
+      <p class="post"> 
+	  {{ post.content|slice(0,1500)|nl2br}}
+	  {% if post.content|length > 1500 %}
+	  ... <br><br><h5>Press reply to read the rest!</h5>
+	  {% endif %}
+	  </p>
     </div>
 	
 	<form action="like/{{post.id}}" id="likeForm{{post.id}}" method="POST">
