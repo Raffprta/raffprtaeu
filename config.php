@@ -5,7 +5,7 @@
 // 
 //================================================================================
 
-define('BASE_URL', 'http://localhost/');        // Root URL of this app 
+define('BASE_URL', 'http://raffprta/');        // Root URL of this app 
 define('DATABASE_HOST', 'localhost');           // Database location
 define('DATABASE_NAME', 'raffprtaeu');          // Database name
 define('DATABASE_USERNAME', 'root');            // Database username

@@ -72,8 +72,9 @@
         <label> Archive Year: </label>
         <select name="year">
           <option value="" selected="selected">Select</option>
-          <option value="2014">2014</option>  
-          <option value="2015">2015</option>
+          {% for i in now|date('Y')..2014 %}
+            <option value="{{i}}">{{i}}</option>  
+          {% endfor %}
         </select>
 
     </fieldset>
